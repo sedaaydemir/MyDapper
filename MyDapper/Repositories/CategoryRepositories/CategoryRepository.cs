@@ -13,34 +13,59 @@ namespace MyDapper.Repositories.CategoryRepositories
             _context = context;
         }
 
+        //public async Task CreateCategoryAsync(CreateCategoryDto createCategoryDto)
+        //{
+        //    string query = "insert into Categories (CategoryName) values (@categoryName)";
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@categoryName", createCategoryDto.CategoryName);
+        //    var connection=_context.CreateConnection();
+        //    await connection.ExecuteAsync(query, parameters);
+
+        //}
         public async Task CreateCategoryAsync(CreateCategoryDto createCategoryDto)
         {
             string query = "insert into Categories (CategoryName) values (@categoryName)";
             var parameters = new DynamicParameters();
             parameters.Add("@categoryName", createCategoryDto.CategoryName);
-            var connection=_context.CreateConnection();
+            var connection = _context.CreateConnection();
             await connection.ExecuteAsync(query, parameters);
-
         }
 
-        public Task DeleteCategoryAsync(int id)
+        public async Task DeleteCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            string query = "Delete From Categories Where CategoryId=@categoryId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@categoryId", id);
+            var connection = _context.CreateConnection();
+            await connection.ExecuteAsync(query, parameters);
         }
 
-        public Task<List<ResultCategoryDto>> GetAllCategoryAsync()
+        public async Task<List<ResultCategoryDto>> GetAllCategoryAsync()
         {
-            throw new NotImplementedException();
+            string query = "Select * From Categories";
+            var connection = _context.CreateConnection();
+            var values = await connection.QueryAsync<ResultCategoryDto>(query);
+            return values.ToList();
         }
 
-        public Task<GetByIdCategoryDto> GetByIdCategoryAsync(int id)
+        public async Task<GetByIdCategoryDto> GetByIdCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            string query = "Select  From Categories Where CategoryId=@categoryId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@categoryId", id);
+            var connection = _context.CreateConnection();   
+            var values =await connection.QueryFirstOrDefaultAsync<GetByIdCategoryDto>(query);
+            return values;
         }
 
-        public Task UpdateCategoryAsync(UpdateCategoryDto updateCategoryDto)
+        public async Task UpdateCategoryAsync(UpdateCategoryDto updateCategoryDto)
         {
-            throw new NotImplementedException();
+            string query = "update Categories set CategoryName =@categoryName where CategoryId=@categoryId";
+            var parameters= new DynamicParameters();
+            parameters.Add("@categoryId", updateCategoryDto.CategoryId);
+            parameters.Add("@categoryName",updateCategoryDto.CategoryName);
+            var connection = _context.CreateConnection();
+            await connection.ExecuteAsync(query,parameters);
         }
     }
 }

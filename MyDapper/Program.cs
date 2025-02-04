@@ -1,11 +1,13 @@
 using MyDapper.Context;
 using MyDapper.Repositories.CategoryRepositories;
+using MyDapper.Repositories.ProductRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<DapperContext>();
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddControllersWithViews();
 

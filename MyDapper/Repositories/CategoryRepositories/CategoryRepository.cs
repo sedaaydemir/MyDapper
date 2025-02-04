@@ -50,11 +50,11 @@ namespace MyDapper.Repositories.CategoryRepositories
 
         public async Task<GetByIdCategoryDto> GetByIdCategoryAsync(int id)
         {
-            string query = "Select  From Categories Where CategoryId=@categoryId";
+            string query = "Select * From Categories Where CategoryId=@categoryId";
             var parameters = new DynamicParameters();
             parameters.Add("@categoryId", id);
             var connection = _context.CreateConnection();   
-            var values =await connection.QueryFirstOrDefaultAsync<GetByIdCategoryDto>(query);
+            var values =await connection.QueryFirstOrDefaultAsync<GetByIdCategoryDto>(query, parameters);
             return values;
         }
 
